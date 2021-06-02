@@ -1,0 +1,55 @@
+import 'package:flutter/material.dart';
+
+const double kCardHeadlineFontSize = 24;
+const double kCardSubtextFontSize = 14;
+
+Color? kColorAccent = Colors.green[900];
+Color? kColorAccentRed = Colors.redAccent;
+
+// * 0 birthday,
+// * 1 wedding_anniversary,
+// * 2 annual_meeting,
+// * 3 rememberance_day,
+// * 4 anniversary,
+
+const Map<int, String> kEventEmoji = {
+  -1: "🌍",
+  0: "🍰",
+  1: "💍",
+  2: "🎉",
+  3: "🕯",
+  4: "📋",
+};
+
+const Map<int, String> kEventName = {
+  -1: "Все",
+  0: "День рождения",
+  1: "Годовщина свадьбы",
+  2: "Ежегодная встреча",
+  3: "Дкнь памяти",
+  4: "Годовщина",
+};
+
+const Map<int, String> kEventNameShort = {
+  -1: "Все",
+  0: "Рождения",
+  1: "Свадьбы",
+  2: "Встречи",
+  3: "Память",
+  4: "Годовщины",
+};
+
+const Map<int, String> kMonthName = {
+  1: "Января",
+  2: "Февраля",
+  3: "Марта",
+  4: "Апреля",
+  5: "Мая",
+  6: "Июня",
+  7: "Июля",
+  8: "Августа",
+  9: "Сентября",
+  10: "Октября",
+  11: "Ноября",
+  12: "Декабря",
+};
