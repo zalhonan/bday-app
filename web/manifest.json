@@ -1,6 +1,6 @@
 {
-    "name": "bday",
-    "short_name": "bday",
+    "name": "events",
+    "short_name": "events",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

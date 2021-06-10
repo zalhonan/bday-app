@@ -1,4 +1,4 @@
-package com.example.bday
+package com.example.events
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,4 +1,4 @@
-# bday
+# events
 
 A new Flutter project.
 

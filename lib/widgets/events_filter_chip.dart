@@ -1,21 +1,21 @@
+import 'package:events/controllers/events_list_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
-import '../cubits/filter_events_cubit.dart';
-
+import '../controllers/main_page_controller.dart';
 import '../services/constants.dart';
 
 class EventsFilterChip extends StatelessWidget {
-  final BuildContext context;
-  final int changeTo;
-  final int stateFilter;
-
-  const EventsFilterChip({
+  EventsFilterChip({
     Key? key,
-    required this.context,
     required this.changeTo,
     required this.stateFilter,
   }) : super(key: key);
+
+  final int changeTo;
+  final int stateFilter;
+
+  final EventsListController eventsListC = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class EventsFilterChip extends StatelessWidget {
           backgroundColor: stateFilter == changeTo ? Colors.white : Colors.grey,
         ),
         onTap: () {
-          context.read<FilterEventsCubit>().changeFilter(changeTo);
+          eventsListC.setFilter(changeTo);
         },
       ),
     );

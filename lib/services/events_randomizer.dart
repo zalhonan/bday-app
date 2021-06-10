@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:bday/models/event.dart';
+import '../models/event.dart';
 
 class EventsRandomizer {
   final int eventsAmount;

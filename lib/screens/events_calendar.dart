@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubits/navigation_cubit.dart';
+
+import '../controllers/main_page_controller.dart';
+
+import 'package:get/get.dart';
 
 class EventsCalendar extends StatelessWidget {
+  final MainPageController mainPageC = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -10,7 +14,7 @@ class EventsCalendar extends StatelessWidget {
         child: ElevatedButton(
           child: Text('Dats Calendar. Go home'),
           onPressed: () {
-            context.read<NavigationCubit>().changePage(0);
+            mainPageC.changePage(0);
           },
         ),
       ),

@@ -1,55 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:bday/widgets/event_card.dart';
+import 'package:get/get.dart';
 import '../services/events_randomizer.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubits/events_cubit.dart';
-import '../cubits/filter_events_cubit.dart';
 import '../models/event.dart';
 import '../widgets/events_filter_chip.dart';
 
+import '../widgets/event_card.dart';
+
+import '../controllers/events_storage.dart';
+import '../controllers/events_list_controller.dart';
+
 class EventsList extends StatelessWidget {
+  EventsList({Key? key}) : super(key: key);
+
+  // * создание контроллера
+
+  final EventsListController eventsListC = Get.put(EventsListController());
+
+  // * поиск контроллеров
+
+  final EventsStorage eventsStorage = Get.find();
+
   @override
   Widget build(BuildContext context) {
-    List<Event> filteredList = [];
+    // * инициализация фильтра
+    eventsListC.setFilter(-1);
 
-    return BlocBuilder<FilterEventsCubit, int>(
-      builder: (contextFilter, stateFilter) {
-        return BlocBuilder<EventsCubit, List<Event>>(
-          builder: (context, state) {
-            filteredList = state
-                .where((element) =>
-                    (element.eventKind == stateFilter || stateFilter == -1))
-                .toList();
+    return Obx(() {
+      var setFilter = eventsListC.filter.value;
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      var filteredList = eventsStorage.eventsList.value
+          .where(
+              (element) => (element.eventKind == setFilter || setFilter == -1))
+          .toList();
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
               children: [
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      for (var i = -1; i < 5; i++)
-                        EventsFilterChip(
-                          context: contextFilter,
-                          changeTo: i,
-                          stateFilter: stateFilter,
-                        ),
-                    ],
+                for (var i = -1; i < 5; i++)
+                  EventsFilterChip(
+                    changeTo: i,
+                    stateFilter: eventsListC.filter.value,
                   ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return EventCard(event: filteredList[index]);
-                    },
-                    itemCount: filteredList.length,
-                  ),
-                ),
               ],
-            );
-          },
-        );
-      },
-    );
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                return EventCard(event: filteredList[index]);
+              },
+              itemCount: filteredList.length,
+            ),
+          ),
+        ],
+      );
+    });
   }
 }

@@ -1,16 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../cubits/navigation_cubit.dart';
+import '../screens/add_event.dart';
+import '../screens/app_settings.dart';
+import '../screens/events_calendar.dart';
+import '../screens/events_list.dart';
+import '../screens/make_card.dart';
+
+import '../controllers/main_page_controller.dart';
+import '../controllers/events_storage.dart';
+
+import '../services/events_randomizer.dart';
+
 import '../widgets/common_drawer.dart';
-import 'add_event.dart';
-import 'app_settings.dart';
-import 'events_calendar.dart';
-import 'events_list.dart';
-import 'make_card.dart';
+import '../widgets/common_navbar.dart';
+
+import 'package:get/get.dart';
 
 class MainPage extends StatelessWidget {
+  MainPage({Key? key}) : super(key: key);
+
+  // * Основная страница навигации
+
+  // * Создаём экземпляры контроллеров помощью Get.put(), чтобы сделать их доступнымы дочерним маршрутам
+
+  final MainPageController mainPageC = Get.put(MainPageController());
+
+  final EventsStorage eventsStorage = Get.put(EventsStorage());
+
+  // * Страницы в навигации
+
   final List<Widget> _widgetOptions = [
     EventsList(),
     AddEvent(),
@@ -19,54 +37,41 @@ class MainPage extends StatelessWidget {
     AppSettings(),
   ];
 
+  // * Заголовки - названия страниц в навигации
+
+  final List<String> _widgetNames = [
+    "Список событий",
+    "Добавление и редактирование",
+    "Календарь событий",
+    "Создать открытку",
+    "Настройки приложения",
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NavigationCubit, int>(
-      builder: (context, state) {
+    // * создание и сортировка списка событий для eventsStorage
+    var eventRandomizer =
+        EventsRandomizer(eventsAmount: 300, startYear: 1913, endYear: 2024);
+    var randomEvents = eventRandomizer.getEvents();
+
+    randomEvents.sort((a, b) => a.eventInDays.compareTo(b.eventInDays));
+
+    eventsStorage.setEvents(randomEvents);
+
+    return Obx(
+      () {
         return Scaffold(
           appBar: AppBar(
-            title: Center(child: Text('Список событий')),
-            actions: [
-              IconButton(icon: Icon(Icons.search), onPressed: () {}),
-              Container(
-                width: 6,
-              ),
-            ],
+            title: Text(
+              _widgetNames.elementAt(mainPageC.page.value),
+            ),
           ),
           drawer: CommonDrawer(),
-          body: _widgetOptions.elementAt(context.read<NavigationCubit>().state),
-          bottomNavigationBar: BottomNavigationBar(
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.list),
-                label: 'События',
-                backgroundColor: Colors.blue,
-              ),
-              BottomNavigationBarItem(
-                icon: FaIcon(FontAwesomeIcons.calendarPlus),
-                label: 'Добавить',
-                backgroundColor: Colors.green,
-              ),
-              BottomNavigationBarItem(
-                icon: FaIcon(FontAwesomeIcons.calendar),
-                label: 'Календарь',
-                backgroundColor: Colors.purple,
-              ),
-              BottomNavigationBarItem(
-                icon: FaIcon(FontAwesomeIcons.envelope),
-                label: 'Открытки',
-                backgroundColor: Colors.cyan,
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'Настройки',
-                backgroundColor: Colors.pink,
-              ),
-            ],
-            currentIndex: context.read<NavigationCubit>().state,
-            onTap: (index) {
-              context.read<NavigationCubit>().changePage(index);
-            },
+          body: Center(
+            child: _widgetOptions.elementAt(mainPageC.page.value),
+          ),
+          bottomNavigationBar: CommonNavbar(
+            navigationState: mainPageC.page.value,
           ),
         );
       },
