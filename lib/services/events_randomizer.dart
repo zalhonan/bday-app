@@ -20,12 +20,13 @@ class EventsRandomizer {
     for (var i = 0; i < eventsAmount; i++) {
       res.add(Event(
         eventKind: generateRandomEvent(),
-        personName: generateRandomString(rnd.nextInt(10)) +
+        personName: generateRandomString(rnd.nextInt(20)) +
             " " +
-            generateRandomString(rnd.nextInt(10)),
+            generateRandomString(rnd.nextInt(20)),
         yearKnown: rnd.nextBool(),
         startDate: DateTime.parse(generateRandomDate()),
-        systemNotifications: rnd.nextBool(),
+        systemNotifications: false,
+        // systemNotifications: rnd.nextBool(),
         notifyToday: rnd.nextBool(),
         notifyTomorrow: rnd.nextBool(),
         notify3Days: rnd.nextBool(),
@@ -38,7 +39,8 @@ class EventsRandomizer {
       personName: "Today Year Ago",
       yearKnown: true,
       startDate: DateTime.now().subtract(const Duration(days: 365)),
-      systemNotifications: rnd.nextBool(),
+      systemNotifications: false,
+      // systemNotifications: rnd.nextBool(),
       notifyToday: rnd.nextBool(),
       notifyTomorrow: rnd.nextBool(),
       notify3Days: rnd.nextBool(),
@@ -52,7 +54,8 @@ class EventsRandomizer {
       startDate: DateTime.now()
           .subtract(const Duration(days: 365))
           .add(Duration(days: 1)),
-      systemNotifications: rnd.nextBool(),
+      systemNotifications: false,
+      // systemNotifications: rnd.nextBool(),
       notifyToday: rnd.nextBool(),
       notifyTomorrow: rnd.nextBool(),
       notify3Days: rnd.nextBool(),
@@ -66,7 +69,8 @@ class EventsRandomizer {
       startDate: DateTime.now()
           .subtract(const Duration(days: 365))
           .add(Duration(days: 2)),
-      systemNotifications: rnd.nextBool(),
+      systemNotifications: false,
+      // systemNotifications: rnd.nextBool(),
       notifyToday: rnd.nextBool(),
       notifyTomorrow: rnd.nextBool(),
       notify3Days: rnd.nextBool(),
@@ -80,7 +84,8 @@ class EventsRandomizer {
       startDate: DateTime.now()
           .subtract(const Duration(days: 365))
           .add(Duration(days: 3)),
-      systemNotifications: rnd.nextBool(),
+      systemNotifications: false,
+      // systemNotifications: rnd.nextBool(),
       notifyToday: rnd.nextBool(),
       notifyTomorrow: rnd.nextBool(),
       notify3Days: rnd.nextBool(),
@@ -94,7 +99,8 @@ class EventsRandomizer {
       startDate: DateTime.now()
           .subtract(const Duration(days: 365 * 2))
           .add(Duration(days: 1)),
-      systemNotifications: rnd.nextBool(),
+      systemNotifications: false,
+      // systemNotifications: rnd.nextBool(),
       notifyToday: rnd.nextBool(),
       notifyTomorrow: rnd.nextBool(),
       notify3Days: rnd.nextBool(),
@@ -106,7 +112,8 @@ class EventsRandomizer {
       personName: "Today this day",
       yearKnown: true,
       startDate: DateTime.now(),
-      systemNotifications: rnd.nextBool(),
+      systemNotifications: false,
+      // systemNotifications: rnd.nextBool(),
       notifyToday: rnd.nextBool(),
       notifyTomorrow: rnd.nextBool(),
       notify3Days: rnd.nextBool(),
@@ -118,6 +125,8 @@ class EventsRandomizer {
 
   int generateRandomEvent() {
     var rnd = Random();
+
+    // * в 50% случаев это день рождения
     if (rnd.nextBool()) {
       return 0;
     }
