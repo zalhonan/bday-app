@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 const double kCardHeadlineFontSize = 24;
 const double kCardSubtextFontSize = 14;
 
+const double kFontSizeHeadline5 = 24;
+const double kFontSizeHeadline6 = 20;
+const double kFontSizeSubtitle1 = 16;
+
 Color? kColorAccent = Colors.green[900];
 Color? kColorAccentRed = Colors.redAccent;
 
@@ -26,7 +30,7 @@ const Map<int, String> kEventName = {
   0: "День рождения",
   1: "Годовщина свадьбы",
   2: "Ежегодная встреча",
-  3: "Дкнь памяти",
+  3: "День памяти",
   4: "Годовщина",
 };
 

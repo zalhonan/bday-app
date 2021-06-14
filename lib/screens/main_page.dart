@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../controllers/events_storage.dart';
+import '../controllers/main_page_controller.dart';
+import '../controllers/auth_controller.dart';
 
 import '../screens/add_event.dart';
 import '../screens/app_settings.dart';
 import '../screens/events_calendar.dart';
 import '../screens/events_list.dart';
 import '../screens/make_card.dart';
-
-import '../controllers/main_page_controller.dart';
-import '../controllers/events_storage.dart';
-
 import '../services/events_randomizer.dart';
-
 import '../widgets/common_drawer.dart';
 import '../widgets/common_navbar.dart';
-
-import 'package:get/get.dart';
 
 class MainPage extends StatelessWidget {
   MainPage({Key? key}) : super(key: key);
@@ -25,10 +23,13 @@ class MainPage extends StatelessWidget {
 
   final MainPageController mainPageC = Get.put(MainPageController());
 
+  // * хранение эвентов
   final EventsStorage eventsStorage = Get.put(EventsStorage());
 
-  // * Страницы в навигации
+  // * авторизация
+  final AuthController authController = Get.put(AuthController());
 
+  // * Список виджетов - страницы в навигации
   final List<Widget> _widgetOptions = [
     EventsList(),
     AddEvent(),
@@ -37,8 +38,7 @@ class MainPage extends StatelessWidget {
     AppSettings(),
   ];
 
-  // * Заголовки - названия страниц в навигации
-
+  // * Список заголовков - названия страниц в навигации
   final List<String> _widgetNames = [
     "Список событий",
     "Добавление и редактирование",
@@ -49,15 +49,6 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // * создание и сортировка списка событий для eventsStorage
-    var eventRandomizer =
-        EventsRandomizer(eventsAmount: 300, startYear: 1913, endYear: 2024);
-    var randomEvents = eventRandomizer.getEvents();
-
-    randomEvents.sort((a, b) => a.eventInDays.compareTo(b.eventInDays));
-
-    eventsStorage.setEvents(randomEvents);
-
     return Obx(
       () {
         return Scaffold(

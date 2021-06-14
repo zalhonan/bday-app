@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../services/events_randomizer.dart';
-import '../models/event.dart';
-import '../widgets/events_filter_chip.dart';
 
-import '../widgets/event_card.dart';
-
-import '../controllers/events_storage.dart';
 import '../controllers/events_list_controller.dart';
+import '../controllers/events_storage.dart';
+import '../widgets/event_card.dart';
+import '../widgets/events_filter_chip.dart';
 
 class EventsList extends StatelessWidget {
   EventsList({Key? key}) : super(key: key);
