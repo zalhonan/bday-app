@@ -14,6 +14,8 @@ import '../services/events_randomizer.dart';
 import '../widgets/common_drawer.dart';
 import '../widgets/common_navbar.dart';
 
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 class MainPage extends StatelessWidget {
   MainPage({Key? key}) : super(key: key);
 
@@ -32,19 +34,17 @@ class MainPage extends StatelessWidget {
   // * Список виджетов - страницы в навигации
   final List<Widget> _widgetOptions = [
     EventsList(),
-    AddEvent(),
     EventsCalendar(),
-    MakeCard(),
-    AppSettings(),
+    // MakeCard(),
+    // AppSettings(),
   ];
 
   // * Список заголовков - названия страниц в навигации
   final List<String> _widgetNames = [
     "Список событий",
-    "Добавление и редактирование",
     "Календарь событий",
-    "Создать открытку",
-    "Настройки приложения",
+    // "Создать открытку",
+    // "Настройки приложения",
   ];
 
   @override
@@ -64,6 +64,15 @@ class MainPage extends StatelessWidget {
           bottomNavigationBar: CommonNavbar(
             navigationState: mainPageC.page.value,
           ),
+          floatingActionButton: mainPageC.page.value == 0
+              ? FloatingActionButton(
+                  onPressed: () {
+                    addEvent(context);
+                  },
+                  child: FaIcon(FontAwesomeIcons.calendarPlus),
+                  backgroundColor: Colors.blue[600],
+                )
+              : null,
         );
       },
     );

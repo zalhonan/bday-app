@@ -34,7 +34,7 @@ class CommonDrawer extends StatelessWidget {
                   title: Text(
                     authC.isAuthorized.value
                         ? "Авторизованный пользователь"
-                        : "Требуется авторизация",
+                        : "Анонимный пользователь",
                     style: TextStyle(
                         color: Colors.white, fontSize: kFontSizeHeadline6),
                   ),

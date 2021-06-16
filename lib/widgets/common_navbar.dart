@@ -19,6 +19,7 @@ class CommonNavbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      type: BottomNavigationBarType.shifting,
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.list),
@@ -26,25 +27,20 @@ class CommonNavbar extends StatelessWidget {
           backgroundColor: Colors.blue,
         ),
         BottomNavigationBarItem(
-          icon: FaIcon(FontAwesomeIcons.calendarPlus),
-          label: 'Добавить',
-          backgroundColor: Colors.green,
-        ),
-        BottomNavigationBarItem(
           icon: FaIcon(FontAwesomeIcons.calendar),
           label: 'Календарь',
           backgroundColor: Colors.purple,
         ),
-        BottomNavigationBarItem(
-          icon: FaIcon(FontAwesomeIcons.envelope),
-          label: 'Открытки',
-          backgroundColor: Colors.cyan,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: 'Настройки',
-          backgroundColor: Colors.pink,
-        ),
+        // BottomNavigationBarItem(
+        //   icon: FaIcon(FontAwesomeIcons.envelope),
+        //   label: 'Открытки',
+        //   backgroundColor: Colors.cyan,
+        // ),
+        // BottomNavigationBarItem(
+        //   icon: Icon(Icons.settings),
+        //   label: 'Настройки',
+        //   backgroundColor: Colors.pink,
+        // ),
       ],
       currentIndex: navigationState,
       onTap: (index) {
