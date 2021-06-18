@@ -67,7 +67,7 @@ class MainPage extends StatelessWidget {
           floatingActionButton: mainPageC.page.value == 0
               ? FloatingActionButton(
                   onPressed: () {
-                    addEvent(context);
+                    addEvent(context: context, isNew: true);
                   },
                   child: FaIcon(FontAwesomeIcons.calendarPlus),
                   backgroundColor: Colors.blue[600],

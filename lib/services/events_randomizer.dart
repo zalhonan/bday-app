@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:uuid/uuid.dart';
+
 import '../models/event.dart';
 
 class EventsRandomizer {
@@ -12,6 +14,8 @@ class EventsRandomizer {
     required this.endYear,
   });
 
+  var uuid = Uuid();
+
   List<Event> getEvents() {
     List<Event> res = [];
 
@@ -19,6 +23,7 @@ class EventsRandomizer {
 
     for (var i = 0; i < eventsAmount; i++) {
       res.add(Event(
+        id: uuid.v1(),
         eventKind: generateRandomEvent(),
         personName: generateRandomString(rnd.nextInt(20)) +
             " " +
@@ -31,10 +36,12 @@ class EventsRandomizer {
         notifyTomorrow: rnd.nextBool(),
         notify3Days: rnd.nextBool(),
         notifyWeek: rnd.nextBool(),
+        reminderTime: DateTime.now(),
       ));
     }
 
     res.add(Event(
+      id: uuid.v1(),
       eventKind: generateRandomEvent(),
       personName: "Today Year Ago",
       yearKnown: true,
@@ -45,9 +52,11 @@ class EventsRandomizer {
       notifyTomorrow: rnd.nextBool(),
       notify3Days: rnd.nextBool(),
       notifyWeek: rnd.nextBool(),
+      reminderTime: DateTime.now(),
     ));
 
     res.add(Event(
+      id: uuid.v1(),
       eventKind: generateRandomEvent(),
       personName: "Tomorrow Year Ago",
       yearKnown: true,
@@ -60,9 +69,11 @@ class EventsRandomizer {
       notifyTomorrow: rnd.nextBool(),
       notify3Days: rnd.nextBool(),
       notifyWeek: rnd.nextBool(),
+      reminderTime: DateTime.now(),
     ));
 
     res.add(Event(
+      id: uuid.v1(),
       eventKind: generateRandomEvent(),
       personName: "2 days Year Ago",
       yearKnown: true,
@@ -75,9 +86,11 @@ class EventsRandomizer {
       notifyTomorrow: rnd.nextBool(),
       notify3Days: rnd.nextBool(),
       notifyWeek: rnd.nextBool(),
+      reminderTime: DateTime.now(),
     ));
 
     res.add(Event(
+      id: uuid.v1(),
       eventKind: generateRandomEvent(),
       personName: "3 days Year Ago",
       yearKnown: true,
@@ -90,9 +103,11 @@ class EventsRandomizer {
       notifyTomorrow: rnd.nextBool(),
       notify3Days: rnd.nextBool(),
       notifyWeek: rnd.nextBool(),
+      reminderTime: DateTime.now(),
     ));
 
     res.add(Event(
+      id: uuid.v1(),
       eventKind: generateRandomEvent(),
       personName: "After tomorr. 2 Years Ago",
       yearKnown: true,
@@ -105,9 +120,11 @@ class EventsRandomizer {
       notifyTomorrow: rnd.nextBool(),
       notify3Days: rnd.nextBool(),
       notifyWeek: rnd.nextBool(),
+      reminderTime: DateTime.now(),
     ));
 
     res.add(Event(
+      id: uuid.v1(),
       eventKind: generateRandomEvent(),
       personName: "Today this day",
       yearKnown: true,
@@ -118,6 +135,7 @@ class EventsRandomizer {
       notifyTomorrow: rnd.nextBool(),
       notify3Days: rnd.nextBool(),
       notifyWeek: rnd.nextBool(),
+      reminderTime: DateTime.now(),
     ));
 
     return res;

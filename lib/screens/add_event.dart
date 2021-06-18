@@ -1,38 +1,85 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:uuid/uuid.dart';
 
+import 'package:intl/intl.dart';
+
+import '../controllers/events_storage.dart';
 import '../services/constants.dart';
 import '../widgets/event_chosing_title.dart';
 import '../widgets/keyboard_wise_scroller.dart';
-import '../controllers/events_storage.dart';
+import '../models/event.dart';
 
-void addEvent(BuildContext context) {
+void addEvent({required BuildContext context, required bool isNew}) {
+  // * isNew - true если новое событие, false если событие редактируется
   showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (context) {
-        return AddEvent();
+        return AddEvent(
+          isNew: isNew,
+        );
       });
 }
 
 class AddEvent extends StatefulWidget {
+  final bool isNew;
+
+  const AddEvent({
+    Key? key,
+    required this.isNew,
+  }) : super(key: key);
+
   @override
   _AddEventState createState() => _AddEventState();
 }
 
 class _AddEventState extends State<AddEvent> {
-  int _kind = 0;
-  String _name = "";
-  List<bool> _reminders = [true, false, false, false, false];
+  var uuid = Uuid();
+
+  String _id = "";
+  int _eventKind = 0;
+  String _personName = "";
+  List<bool> _reminders = [true, false, false, false];
   bool _yearKnown = true;
-  DateTime _initialDate = DateTime.now();
-  DateTime _reminderTime = DateTime.now();
+  DateTime _startDate = DateTime.now();
+  DateTime _reminderTime =
+      DateFormat('dd-MM-yyyy h:mm', 'ru_RU').parseLoose('01-11-2020 9:00');
+
+  // * предовращение обновления
+  bool _loaded = false;
+
+  // * найдём общее хранилище эвентов
+  final EventsStorage eventsStorage = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    // * если это не новый эвент - загружаем из хранилища нужный и раскладываем во все поля.
+    // * для нового генерируем id
+    if (widget.isNew) {
+      _id = uuid.v1();
+    } else if (!_loaded) {
+      // * находим элемент по ID и раскладываем в поля формы
+      Event eventToFix = eventsStorage.getEventIdSet;
+      _id = eventToFix.id;
+      _eventKind = eventToFix.eventKind;
+      _personName = eventToFix.personName;
+      _reminders = [
+        eventToFix.notifyToday,
+        eventToFix.notifyTomorrow,
+        eventToFix.notify3Days,
+        eventToFix.notifyWeek
+      ];
+      _yearKnown = eventToFix.yearKnown;
+      _startDate = eventToFix.startDate;
+      _reminderTime = eventToFix.reminderTime;
+
+      _loaded = true;
+    }
+
     return Container(
-      height: Get.height / 4 * 3,
+      height: Get.height / 5 * 4,
       child: KeyboardWiseScroller(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,10 +89,29 @@ class _AddEventState extends State<AddEvent> {
             Container(
               padding: EdgeInsets.all(10),
               child: Text(
-                "Создайте или отредактируйте событие",
+                widget.isNew
+                    ? "Создайте событие (скролл вниз для подтверждения)"
+                    : "Редактиврование события (скролл вниз для подтверждения)",
                 style: TextStyle(
                   fontSize: kFontSizeHeadline5,
                 ),
+              ),
+            ),
+
+            // * Ввод имени
+            EventChosingTitle(title: "Имя или название события"),
+
+            Container(
+              padding: EdgeInsets.all(10),
+              child: TextFormField(
+                initialValue: _personName,
+                decoration: InputDecoration(
+                  hintText: 'Имя персоны или название события',
+                  // labelText: 'Название события',
+                ),
+                onChanged: (value) {
+                  _personName = value;
+                },
               ),
             ),
 
@@ -59,30 +125,14 @@ class _AddEventState extends State<AddEvent> {
                   RadioListTile<int>(
                     title: Text("${kEventEmoji[i]} ${kEventName[i]}"),
                     value: i,
-                    groupValue: _kind,
+                    groupValue: _eventKind,
                     onChanged: (value) {
                       setState(() {
-                        _kind = value ?? 0;
+                        _eventKind = value ?? _eventKind;
                       });
                     },
                   ),
               ],
-            ),
-            // * Ввод имени
-            EventChosingTitle(title: "Имя или название события"),
-
-            Container(
-              padding: EdgeInsets.all(10),
-              child: TextFormField(
-                initialValue: _name,
-                decoration: InputDecoration(
-                  hintText: 'Имя персоны или название события',
-                  // labelText: 'Название события',
-                ),
-                onChanged: (value) {
-                  _name = value;
-                },
-              ),
             ),
 
             // * Дата события + известен ли год
@@ -99,7 +149,7 @@ class _AddEventState extends State<AddEvent> {
                 initialDateTime: DateTime.now(),
                 onDateTimeChanged: (DateTime startDate) {
                   setState(() {
-                    _initialDate = startDate;
+                    _startDate = startDate;
                   });
                 },
               ),
@@ -121,7 +171,7 @@ class _AddEventState extends State<AddEvent> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                for (var i = 0; i < 5; i++)
+                for (var i = 0; i < 4; i++)
                   CheckboxListTile(
                     title: Text("${kReminders[i]}"),
                     controlAffinity: ListTileControlAffinity.leading,
@@ -145,11 +195,10 @@ class _AddEventState extends State<AddEvent> {
               child: CupertinoDatePicker(
                 mode: CupertinoDatePickerMode.time,
                 use24hFormat: true,
-                initialDateTime: DateTime.now(),
+                initialDateTime: _reminderTime,
                 onDateTimeChanged: (DateTime reminderTime) {
                   setState(() {
                     _reminderTime = reminderTime;
-                    print(_reminderTime);
                   });
                 },
               ),
@@ -162,9 +211,32 @@ class _AddEventState extends State<AddEvent> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      print("new event set");
+                      Event eventToAdd = Event(
+                        id: _id,
+                        eventKind: _eventKind,
+                        personName: _personName,
+                        yearKnown: _yearKnown,
+                        startDate: _startDate,
+                        systemNotifications: false,
+                        notifyToday: _reminders[0],
+                        notifyTomorrow: _reminders[1],
+                        notify3Days: _reminders[2],
+                        notifyWeek: _reminders[3],
+                        reminderTime: _reminderTime,
+                      );
+
+                      if (widget.isNew) {
+                        // * для нового элемента - запись в хранилище
+                        eventsStorage.addEvent(eventToAdd);
+                      } else {
+                        // * редактирование: найти по id и заменить
+                        eventsStorage.editEvent(eventToAdd);
+                      }
+                      Get.back();
                     },
-                    child: Text("Добавить событие"),
+                    child: Text(widget.isNew
+                        ? "Добавить событие"
+                        : "Отредактировать событие"),
                   ),
                   OutlinedButton(
                     onPressed: () {

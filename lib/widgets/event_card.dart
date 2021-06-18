@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:random_color/random_color.dart';
 
+import '../controllers/events_storage.dart';
 import '../models/event.dart';
 import '../services/constants.dart';
 
-import 'package:random_color/random_color.dart';
+import '../screens/add_event.dart';
 
 class EventCard extends StatelessWidget {
   final Event event;
@@ -14,6 +17,9 @@ class EventCard extends StatelessWidget {
   }) : super(key: key);
 
   final RandomColor _randomColor = RandomColor();
+
+  // * найдём общее хранилище эвентов
+  final EventsStorage eventsStorage = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -62,15 +68,21 @@ class EventCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Chip(
-                        backgroundColor: Colors.white,
-                        elevation: 4,
-                        avatar: Icon(
-                          Icons.settings,
-                          color: Colors.grey,
-                          size: 24,
+                      GestureDetector(
+                        child: Chip(
+                          backgroundColor: Colors.white,
+                          elevation: 4,
+                          avatar: Icon(
+                            Icons.settings,
+                            color: Colors.grey,
+                            size: 24,
+                          ),
+                          label: Text("Настройки"),
                         ),
-                        label: Text("Настройки"),
+                        onTap: () {
+                          eventsStorage.setEventToEdit(event.id);
+                          addEvent(context: context, isNew: false);
+                        },
                       ),
                       Container(
                         width: 6,

@@ -18,6 +18,7 @@ dependencies:
   google_fonts: ^2.1.0
   intl: ^0.17.0
   random_color: ^1.0.6-nullsafety
+  uuid: ^3.0.4
 
 dev_dependencies:
   flutter_test:

@@ -1,12 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-
-import '../services/constants.dart';
-
 import 'package:intl/intl.dart';
 
 import "../services/datesProcessor.dart";
+import '../services/constants.dart';
 
 // ! Вид события
 // * 0 birthday,
@@ -16,6 +14,7 @@ import "../services/datesProcessor.dart";
 // * 4 anniversary,
 
 class Event {
+  final String id;
   final int eventKind;
   final String personName;
   final bool yearKnown;
@@ -25,9 +24,11 @@ class Event {
   final bool notifyTomorrow;
   final bool notify3Days;
   final bool notifyWeek;
+  final DateTime reminderTime;
   DatesProcessor datesProcessor;
 
   Event({
+    required this.id,
     required this.eventKind,
     required this.personName,
     required this.yearKnown,
@@ -37,6 +38,7 @@ class Event {
     required this.notifyTomorrow,
     required this.notify3Days,
     required this.notifyWeek,
+    required this.reminderTime,
   }) : datesProcessor = DatesProcessor(
           languageCode: 'ru',
           todayDate: DateTime.now(),
@@ -98,6 +100,7 @@ class Event {
   }
 
   Event copyWith({
+    String? id,
     int? eventKind,
     String? personName,
     bool? yearKnown,
@@ -107,8 +110,11 @@ class Event {
     bool? notifyTomorrow,
     bool? notify3Days,
     bool? notifyWeek,
+    DateTime? reminderTime,
+    DatesProcessor? datesProcessor,
   }) {
     return Event(
+      id: id ?? this.id,
       eventKind: eventKind ?? this.eventKind,
       personName: personName ?? this.personName,
       yearKnown: yearKnown ?? this.yearKnown,
@@ -118,11 +124,13 @@ class Event {
       notifyTomorrow: notifyTomorrow ?? this.notifyTomorrow,
       notify3Days: notify3Days ?? this.notify3Days,
       notifyWeek: notifyWeek ?? this.notifyWeek,
+      reminderTime: reminderTime ?? this.reminderTime,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'eventKind': eventKind,
       'personName': personName,
       'yearKnown': yearKnown,
@@ -132,11 +140,13 @@ class Event {
       'notifyTomorrow': notifyTomorrow,
       'notify3Days': notify3Days,
       'notifyWeek': notifyWeek,
+      'reminderTime': reminderTime.millisecondsSinceEpoch,
     };
   }
 
   factory Event.fromMap(Map<String, dynamic> map) {
     return Event(
+      id: map['id'],
       eventKind: map['eventKind'],
       personName: map['personName'],
       yearKnown: map['yearKnown'],
@@ -146,6 +156,7 @@ class Event {
       notifyTomorrow: map['notifyTomorrow'],
       notify3Days: map['notify3Days'],
       notifyWeek: map['notifyWeek'],
+      reminderTime: DateTime.fromMillisecondsSinceEpoch(map['reminderTime']),
     );
   }
 
@@ -155,7 +166,7 @@ class Event {
 
   @override
   String toString() {
-    return 'Event(eventKind: $eventKind, personName: $personName, yearKnown: $yearKnown, startDate: $startDate, systemNotifications: $systemNotifications, notifyToday: $notifyToday, notifyTomorrow: $notifyTomorrow, notify3Days: $notify3Days, notifyWeek: $notifyWeek)';
+    return 'Event(id: $id, eventKind: $eventKind, personName: $personName, yearKnown: $yearKnown, startDate: $startDate, systemNotifications: $systemNotifications, notifyToday: $notifyToday, notifyTomorrow: $notifyTomorrow, notify3Days: $notify3Days, notifyWeek: $notifyWeek, reminderTime: $reminderTime, datesProcessor: $datesProcessor)';
   }
 
   @override
@@ -163,6 +174,7 @@ class Event {
     if (identical(this, other)) return true;
 
     return other is Event &&
+        other.id == id &&
         other.eventKind == eventKind &&
         other.personName == personName &&
         other.yearKnown == yearKnown &&
@@ -171,12 +183,15 @@ class Event {
         other.notifyToday == notifyToday &&
         other.notifyTomorrow == notifyTomorrow &&
         other.notify3Days == notify3Days &&
-        other.notifyWeek == notifyWeek;
+        other.notifyWeek == notifyWeek &&
+        other.reminderTime == reminderTime &&
+        other.datesProcessor == datesProcessor;
   }
 
   @override
   int get hashCode {
-    return eventKind.hashCode ^
+    return id.hashCode ^
+        eventKind.hashCode ^
         personName.hashCode ^
         yearKnown.hashCode ^
         startDate.hashCode ^
@@ -184,6 +199,8 @@ class Event {
         notifyToday.hashCode ^
         notifyTomorrow.hashCode ^
         notify3Days.hashCode ^
-        notifyWeek.hashCode;
+        notifyWeek.hashCode ^
+        reminderTime.hashCode ^
+        datesProcessor.hashCode;
   }
 }
