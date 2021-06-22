@@ -9,15 +9,22 @@ class KeyboardWiseScroller extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scrollbar(
-      child: CustomScrollView(
-        slivers: [
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: child,
+    return Column(
+      children: [
+        Expanded(
+          child: Scrollbar(
+            child: CustomScrollView(
+              slivers: [
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: child,
+                ),
+              ],
+            ),
           ),
-        ],
-      ),
+        ),
+        Text("data here yo"),
+      ],
     );
   }
 }

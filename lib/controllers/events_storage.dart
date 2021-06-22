@@ -36,4 +36,9 @@ class EventsStorage extends GetxController {
       }
     }
   }
+
+  // * удалить элемент по ID
+  deleteElement(String elementId) {
+    eventsList.removeWhere((element) => element.id == elementId);
+  }
 }
