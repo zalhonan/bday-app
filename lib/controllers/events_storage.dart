@@ -29,10 +29,39 @@ class EventsStorage extends GetxController {
   }
 
   // * получить список ID событий для данного дня
-  // TODO: сделать
+  List<String> getEventsIdsByDay(DateTime day) {
+    List<String> res = [];
+    for (Event e in eventsList) {
+      if (e.startDate.day == day.day && e.startDate.month == day.month) {
+        res.add(e.id);
+      }
+    }
+    return res;
+  }
+
+  // * получить список событий для данного дня
+  List<Event> getEventsByDay(DateTime day) {
+    List<Event> res = [];
+    for (Event e in eventsList) {
+      if (e.startDate.day == day.day && e.startDate.month == day.month) {
+        res.add(e);
+      }
+    }
+    return res;
+  }
 
   // * получить список событий по списку ID
-  // TODO: сделать
+  List<Event> getEventsByIds(List<String> eventsIds) {
+    List<Event> res = [];
+    for (String id in eventsIds) {
+      for (Event e in eventsList) {
+        if (e.id == id) {
+          res.add(e);
+        }
+      }
+    }
+    return res;
+  }
 
   // * перезаписать элемент по его ID
   editEvent(Event fixedEvent) {
