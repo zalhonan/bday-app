@@ -28,6 +28,12 @@ class EventsStorage extends GetxController {
     throw ("Element not found yo $eventIdToEdit");
   }
 
+  // * получить список ID событий для данного дня
+  // TODO: сделать
+
+  // * получить список событий по списку ID
+  // TODO: сделать
+
   // * перезаписать элемент по его ID
   editEvent(Event fixedEvent) {
     for (int i = 0; i < eventsList.length; i++) {

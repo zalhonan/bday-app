@@ -10,6 +10,10 @@ const double kFontSizeSubtitle1 = 16;
 Color? kColorAccent = Colors.green[900];
 Color? kColorAccentRed = Colors.redAccent;
 
+final kNow = DateTime.now();
+final kFirstDay = DateTime(kNow.year - 100, kNow.month, kNow.day);
+final kLastDay = DateTime(kNow.year + 100, kNow.month + 3, kNow.day);
+
 // * 0 birthday,
 // * 1 wedding_anniversary,
 // * 2 annual_meeting,
