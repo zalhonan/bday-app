@@ -151,7 +151,7 @@ class _AddEventState extends State<AddEvent> {
                           height: 200,
                           width: Get.width,
                           margin: EdgeInsets.fromLTRB(
-                              Get.width * 0.25, 0, Get.width * 0.25, 0),
+                              Get.width * 0.15, 0, Get.width * 0.15, 0),
                           child: CupertinoDatePicker(
                             mode: CupertinoDatePickerMode.date,
                             use24hFormat: true,
@@ -251,9 +251,7 @@ class _AddEventState extends State<AddEvent> {
                     }
                     Get.back();
                   },
-                  child: Text(widget.isNew
-                      ? "Добавить событие"
-                      : "Отредактировать событие"),
+                  child: Text(widget.isNew ? "Добавить" : "Сохранить"),
                 ),
                 if (!widget.isNew)
                   OutlinedButton(
@@ -272,7 +270,7 @@ class _AddEventState extends State<AddEvent> {
                   onPressed: () {
                     Get.back();
                   },
-                  child: Text("Отменить"),
+                  child: Text("Отмена"),
                 ),
               ],
             ),

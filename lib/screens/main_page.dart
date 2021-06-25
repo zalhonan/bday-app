@@ -62,15 +62,16 @@ class MainPage extends StatelessWidget {
           bottomNavigationBar: CommonNavbar(
             navigationState: mainPageC.page.value,
           ),
-          floatingActionButton: mainPageC.page.value == 0
-              ? FloatingActionButton(
-                  onPressed: () {
-                    addEvent(context: context, isNew: true);
-                  },
-                  child: FaIcon(FontAwesomeIcons.calendarPlus),
-                  backgroundColor: Colors.blue[600],
-                )
-              : null,
+          floatingActionButton:
+              mainPageC.page.value == 0 || mainPageC.page.value == 1
+                  ? FloatingActionButton(
+                      onPressed: () {
+                        addEvent(context: context, isNew: true);
+                      },
+                      child: FaIcon(FontAwesomeIcons.calendarPlus),
+                      backgroundColor: Colors.blue[600],
+                    )
+                  : null,
         );
       },
     );
