@@ -58,9 +58,7 @@ class MainPage extends StatelessWidget {
             ),
           ),
           drawer: CommonDrawer(),
-          body: Center(
-            child: _widgetOptions.elementAt(mainPageC.page.value),
-          ),
+          body: _widgetOptions.elementAt(mainPageC.page.value),
           bottomNavigationBar: CommonNavbar(
             navigationState: mainPageC.page.value,
           ),

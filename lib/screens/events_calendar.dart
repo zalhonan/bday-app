@@ -14,12 +14,14 @@ class EventsCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    c.setEvents(eventsStorage.getEventsByDay(DateTime.now()));
+    // c.setEvents(eventsStorage.getEventsByDay(DateTime.now()));
 
     return Obx(() {
       return Scrollbar(
         child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TableCalendar(
                 // * в дальнейших портах на другие языки привязать к локали
@@ -48,7 +50,7 @@ class EventsCalendar extends StatelessWidget {
                     c.setSelectedDay(selectedDay);
                     c.setFocusedDay(focusedDay);
                   }
-                  c.setEvents(eventsStorage.getEventsByDay(focusedDay));
+                  eventsStorage.getEventsByDay(focusedDay);
                 },
                 // * смена формата календаря
                 onFormatChanged: (format) {
@@ -58,14 +60,15 @@ class EventsCalendar extends StatelessWidget {
                 onPageChanged: (focusedDay) {
                   c.setFocusedDay(focusedDay);
                   c.setSelectedDay(focusedDay);
-                  c.setEvents(eventsStorage.getEventsByDay(focusedDay));
+                  // c.setEvents(eventsStorage.getEventsByDay(focusedDay));
                 },
                 // * сколько событий в данный день - отобразить точками
                 eventLoader: (DateTime day) {
                   return eventsStorage.getEventsIdsByDay(day);
                 },
               ),
-              for (Event e in c.eventsThisDay) EventCard(event: e),
+              for (Event e in eventsStorage.getEventsByDay(c.focusedDay.value))
+                EventCard(event: e),
             ],
           ),
         ),
@@ -87,8 +90,4 @@ class EventCalendarController extends GetxController {
   var selectedDay = DateTime.now().obs;
 
   setSelectedDay(DateTime newDay) => selectedDay.value = newDay;
-
-  var eventsThisDay = [].obs;
-
-  setEvents(List<Event> events) => eventsThisDay.value = events;
 }
