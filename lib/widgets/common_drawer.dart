@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'package:get/get.dart';
-
-import '../services/constants.dart';
-import '../services/events_randomizer.dart';
 
 import '../controllers/auth_controller.dart';
 import '../controllers/events_storage.dart';
+import '../services/constants.dart';
+import '../services/events_randomizer.dart';
 
 class CommonDrawer extends StatelessWidget {
   final AuthController authC = Get.find();

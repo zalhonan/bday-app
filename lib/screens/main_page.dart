@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+import '../controllers/auth_controller.dart';
 import '../controllers/events_storage.dart';
 import '../controllers/main_page_controller.dart';
-import '../controllers/auth_controller.dart';
-
+import '../models/event.dart';
 import '../screens/add_event.dart';
-import '../screens/app_settings.dart';
 import '../screens/events_calendar.dart';
 import '../screens/events_list.dart';
-import '../screens/make_card.dart';
-import '../services/events_randomizer.dart';
+import '../services/constants.dart';
 import '../widgets/common_drawer.dart';
 import '../widgets/common_navbar.dart';
-
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MainPage extends StatelessWidget {
   MainPage({Key? key}) : super(key: key);
@@ -47,8 +46,20 @@ class MainPage extends StatelessWidget {
     // "Настройки приложения",
   ];
 
+  var box = Hive.box(kHiveBoxName);
+
   @override
   Widget build(BuildContext context) {
+    // * достать список событий из бокса
+    String encodedEvents = box.get(kHiveMainKey) ?? "";
+
+    if (encodedEvents != "") {
+      List<Event> decodedList = Event.decode(encodedEvents);
+      for (Event e in decodedList) {
+        eventsStorage.addEvent(e);
+      }
+    }
+
     return Obx(
       () {
         return Scaffold(

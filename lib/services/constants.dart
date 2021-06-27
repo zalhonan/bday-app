@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+const String kHiveBoxName = "eventsCardsApp2021";
+const String kHiveMainKey = "events";
+
 const double kCardHeadlineFontSize = 24;
 const double kCardSubtextFontSize = 14;
 

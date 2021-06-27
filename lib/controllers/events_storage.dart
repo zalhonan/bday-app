@@ -2,17 +2,36 @@ import 'package:get/get.dart';
 
 import '../models/event.dart';
 
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '../services/constants.dart';
+
 class EventsStorage extends GetxController {
   var eventsList = [].obs;
 
   var eventIdToEdit = "".obs;
 
+  var box = Hive.box(kHiveBoxName);
+
   setEvents(List<Event> newEventsList) => eventsList.value = newEventsList;
+
+  // * ресет списка событий
+  resetEvents() {
+    eventsList.value = [];
+  }
+
+  // * апдейт хранилища в хайве
+  updateHive() {
+    String jsonString = Event.encode(eventsList.value);
+    box.put(kHiveMainKey, jsonString);
+  }
 
   // * добавление + сортировка по дням до события
   addEvent(Event newEvent) {
     eventsList.add(newEvent);
     eventsList.sort((a, b) => a.eventInDays.compareTo(b.eventInDays));
+    updateHive();
   }
 
   // * установка ID элемента для редактирования
@@ -70,10 +89,12 @@ class EventsStorage extends GetxController {
         eventsList[i] = fixedEvent;
       }
     }
+    updateHive();
   }
 
   // * удалить элемент по ID
   deleteElement(String elementId) {
     eventsList.removeWhere((element) => element.id == elementId);
+    updateHive();
   }
 }

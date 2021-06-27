@@ -45,6 +45,36 @@ class Event {
           inputDate: startDate,
         );
 
+  // * перевод в json списка событий
+  static String encode(List<dynamic> events) => json.encode(
+        events
+            .map<Map<String, dynamic>>((event) => Event.toStaticMap(event))
+            .toList(),
+      );
+
+  // * распаковка из json
+  static List<Event> decode(String event) =>
+      (json.decode(event) as List<dynamic>)
+          .map<Event>((item) => Event.fromMap(item))
+          .toList();
+
+  // * вспомогательный статик метод - написать вручную для энкодинга
+  static Map<String, dynamic> toStaticMap(Event event) {
+    return {
+      'id': event.id,
+      'eventKind': event.eventKind,
+      'personName': event.personName,
+      'yearKnown': event.yearKnown,
+      'startDate': event.startDate.millisecondsSinceEpoch,
+      'systemNotifications': event.systemNotifications,
+      'notifyToday': event.notifyToday,
+      'notifyTomorrow': event.notifyTomorrow,
+      'notify3Days': event.notify3Days,
+      'notifyWeek': event.notifyWeek,
+      'reminderTime': event.reminderTime.millisecondsSinceEpoch,
+    };
+  }
+
   String get eventDate {
     // * геттер - дата в формате "🎂 День рождения 16 сентября"
 
