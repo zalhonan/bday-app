@@ -8,7 +8,6 @@ import 'package:intl/intl.dart';
 import '../controllers/events_storage.dart';
 import '../services/constants.dart';
 import '../widgets/event_chosing_title.dart';
-import '../widgets/keyboard_wise_scroller.dart';
 import '../models/event.dart';
 
 void addEvent({required BuildContext context, required bool isNew}) {

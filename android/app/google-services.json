@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "507122292667",
+    "project_id": "events-appy",
+    "storage_bucket": "events-appy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:507122292667:android:086219002335fe7d9cd69e",
+        "android_client_info": {
+          "package_name": "digital.spartancat.events"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "507122292667-a2kef788oun9arv559f65b4d0cgo4fgu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRwzaikuYdXtOfUBq30y9r_KwTQGTauAE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "507122292667-a2kef788oun9arv559f65b4d0cgo4fgu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

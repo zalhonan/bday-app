@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 const String kHiveBoxName = "eventsCardsApp2021";
 const String kHiveMainKey = "events";
 
+const String backendUrl = 'http://127.0.0.1:8000/';
+
 const double kCardHeadlineFontSize = 24;
 const double kCardSubtextFontSize = 14;
 
