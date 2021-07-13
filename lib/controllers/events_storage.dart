@@ -1,13 +1,29 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
-
-import '../models/event.dart';
-
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../models/event.dart';
 import '../services/constants.dart';
+import '../services/async_repository.dart';
+
+import 'package:http/http.dart' as http;
 
 class EventsStorage extends GetxController {
+  final AsyncRepository asyncRepo = AsyncRepository(
+    client: http.Client(),
+  );
+
+  // * токен Firebase Cloud Messaging
+  var fcmToken = "".obs;
+
+  setFcmToken(String newToken) => fcmToken.value = newToken;
+
+  void getFcmToken() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    fcmToken.value = token ?? "";
+  }
+
   var eventsList = [].obs;
 
   var eventIdToEdit = "".obs;
@@ -19,6 +35,18 @@ class EventsStorage extends GetxController {
   // * ресет списка событий
   resetEvents() {
     eventsList.value = [];
+  }
+
+  // * апдейт хранилища на сервере по ключу
+  updateOnServer() async {
+    // TODO проверить чему равен токен, если пустой - добыть еще раз
+    // TODO создать все параметры
+    // TODO отправить всё на сервер
+    // TODO отработать успех и ошибку
+    // TODO проверить что он там реально шлёт
+
+    String resp = await asyncRepo.sendEventsToServer(
+        token: "", language: "", timezone: 0, events: "events");
   }
 
   // * апдейт хранилища в хайве

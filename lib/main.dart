@@ -7,10 +7,19 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 void main() async {
   // * инициализация и открытие бокса
   await Hive.initFlutter();
   await Hive.openBox(kHiveBoxName);
+
+  // * инициализация сервисов Fiebase
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  // * запуск
   runApp(MyApp());
 }
 

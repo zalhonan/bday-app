@@ -7,6 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/events_storage.dart';
 import '../controllers/main_page_controller.dart';
+
 import '../models/event.dart';
 import '../screens/add_event.dart';
 import '../screens/events_calendar.dart';
@@ -59,6 +60,10 @@ class MainPage extends StatelessWidget {
         eventsStorage.addEvent(e);
       }
     }
+
+    // * получить токен и записать его в контроллер
+    eventsStorage.getFcmToken();
+    print(eventsStorage.fcmToken);
 
     return Obx(
       () {
