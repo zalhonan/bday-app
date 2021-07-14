@@ -7,6 +7,8 @@ import '../models/event.dart';
 import '../services/constants.dart';
 import '../services/async_repository.dart';
 
+import 'dart:math';
+
 import 'package:http/http.dart' as http;
 
 class EventsStorage extends GetxController {
@@ -39,14 +41,25 @@ class EventsStorage extends GetxController {
 
   // * апдейт хранилища на сервере по ключу
   updateOnServer() async {
-    // TODO проверить чему равен токен, если пустой - добыть еще раз
-    // TODO создать все параметры
-    // TODO отправить всё на сервер
-    // TODO отработать успех и ошибку
-    // TODO проверить что он там реально шлёт
+    if (fcmToken.value == "") {
+      var token = await FirebaseMessaging.instance.getToken();
+      fcmToken.value = token.toString();
+    }
 
-    String resp = await asyncRepo.sendEventsToServer(
-        token: "", language: "", timezone: 0, events: "events");
+    print(fcmToken.value);
+
+    String jsonEvents = Event.encode(eventsList.value);
+
+    try {
+      String resp = await asyncRepo.sendEventsToServer(
+          token: fcmToken.value,
+          language: "ru",
+          timezone: 2,
+          events: jsonEvents);
+      print(resp);
+    } on Error catch (error) {
+      print(error);
+    }
   }
 
   // * апдейт хранилища в хайве
@@ -60,6 +73,7 @@ class EventsStorage extends GetxController {
     eventsList.add(newEvent);
     eventsList.sort((a, b) => a.eventInDays.compareTo(b.eventInDays));
     updateHive();
+    updateOnServer();
   }
 
   // * установка ID элемента для редактирования
@@ -118,11 +132,13 @@ class EventsStorage extends GetxController {
       }
     }
     updateHive();
+    updateOnServer();
   }
 
   // * удалить элемент по ID
   deleteElement(String elementId) {
     eventsList.removeWhere((element) => element.id == elementId);
     updateHive();
+    updateOnServer();
   }
 }

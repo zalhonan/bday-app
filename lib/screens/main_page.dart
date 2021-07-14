@@ -63,7 +63,6 @@ class MainPage extends StatelessWidget {
 
     // * получить токен и записать его в контроллер
     eventsStorage.getFcmToken();
-    print(eventsStorage.fcmToken);
 
     return Obx(
       () {

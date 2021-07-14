@@ -18,6 +18,7 @@ class AsyncRepository {
     required String events,
   }) async {
     String url = kBackendUrl + "events";
+    var response;
 
     Map<String, String> data = {
       "token": token,
@@ -29,12 +30,14 @@ class AsyncRepository {
     var body = json.encode(data);
     var headers = {"Content-Type": "application/json"};
 
-    var response =
-        await client.post(Uri.parse(url), body: body, headers: headers);
+    try {
+      response =
+          await client.post(Uri.parse(url), body: body, headers: headers);
+    } on Error {
+      print(Error);
+    }
 
     if (response.statusCode != 200) {
-      // TODO: убрать отладочный принт
-      print(jsonDecode(response.body));
       return "Error";
     }
 
