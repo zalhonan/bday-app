@@ -61,7 +61,10 @@ class DatesProcessor {
       return "Завтра";
     } else if (inputDay == 1) {
       return "Послезавтра";
-    } else if ((inputDay >= 5 && inputDay <= 20) ||
+    }
+    // * костыль - коррекия даты "через"
+    inputDay += 1;
+    if ((inputDay >= 5 && inputDay <= 20) ||
         (inputDay >= 205 && inputDay <= 220) ||
         (inputDay >= 305 && inputDay <= 320)) {
       return "Через $inputDay дней";
@@ -92,9 +95,10 @@ class DatesProcessor {
       return "Tomorrow";
     } else if (inputDay == 1) {
       return "Day after tomorrow";
-    } else {
-      return "In $inputDay days";
     }
+    // * костыль - коррекия даты "через"
+    inputDay += 1;
+    return "In $inputDay days";
   }
 
   String inYears(int yearDiff) {

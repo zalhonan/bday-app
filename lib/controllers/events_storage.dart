@@ -37,6 +37,8 @@ class EventsStorage extends GetxController {
   // * ресет списка событий
   resetEvents() {
     eventsList.value = [];
+    updateHive();
+    updateOnServer();
   }
 
   // * апдейт хранилища на сервере по ключу

@@ -154,7 +154,7 @@ class _AddEventState extends State<AddEvent> {
                           child: CupertinoDatePicker(
                             mode: CupertinoDatePickerMode.date,
                             use24hFormat: true,
-                            initialDateTime: DateTime.now(),
+                            initialDateTime: _startDate,
                             onDateTimeChanged: (DateTime startDate) {
                               setState(() {
                                 _startDate = startDate;

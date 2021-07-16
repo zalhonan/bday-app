@@ -48,7 +48,15 @@ class CommonDrawer extends StatelessWidget {
                         ? Column(
                             children: [
                               // * пункт только для админа
-
+                              ListTile(
+                                leading: FaIcon(FontAwesomeIcons.solidTrashAlt),
+                                title: Text('Удалить все события'),
+                                onTap: () {
+                                  // * удаление всех событий в eventsStorage
+                                  eventsStorage.resetEvents();
+                                  print("Deleted!");
+                                },
+                              ),
                               authC.isAdmin.value
                                   ? ListTile(
                                       leading: FaIcon(FontAwesomeIcons.listOl),
